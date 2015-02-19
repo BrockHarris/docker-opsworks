@@ -50,11 +50,11 @@ node[:deploy].each do |application, deploy|
   
   bash "docker-run" do
     user "root"
-    cwd "#{deploy[:deploy_to]}/current"
+    #cwd "#{deploy[:deploy_to]}/current"
 
     #docker run -p 9292:9292 -p 9200:9200 -d pblittle/docker-logstash
     code <<-EOH
-      docker run #{dockerenvs} -p #{node[:opsworks][:instance][:private_ip]}:9292:9292 -p #{node[:opsworks][:instance][:private_ip]}:9200:9200 -d #{deploy[:application]}
+      docker run #{dockerenvs} -p 54.86.41.97:9292:9292 -p 54.86.41.97:9200:9200 -d #{deploy[:application]}
     EOH
 
     #docker run #{dockerenvs} -p #{node[:opsworks][:instance][:private_ip]}:#{deploy[:environment_variables][:service_port]}:#{deploy[:environment_variables][:container_port]} --name #{deploy[:application]} -d 
