@@ -50,7 +50,7 @@ node[:deploy].each do |application, deploy|
   
   bash "docker-run" do
     user "root"
-    #cwd "#{deploy[:deploy_to]}/current"
+    cwd "#{deploy[:deploy_to]}/current"
 
     #docker run -p 9292:9292 -p 9200:9200 -d pblittle/docker-logstash
     code <<-EOH
