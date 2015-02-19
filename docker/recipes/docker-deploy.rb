@@ -12,11 +12,11 @@ node[:deploy].each do |application, deploy|
   bash "docker-cleanup" do
     user "root"
     code <<-EOH
-      if docker ps | grep #{deploy[:application]}; 
+      if docker ps -a 
       then
-        docker stop #{deploy[:application]}
+        docker stop $(docker ps -a -q)
         sleep 3
-        docker rm #{deploy[:application]}
+        docker rm $(docker ps -a -q)
         sleep 3
       fi
       if docker images | grep #{deploy[:application]}; 
@@ -32,9 +32,9 @@ node[:deploy].each do |application, deploy|
     user "root"
     #cwd "#{deploy[:deploy_to]}/current"
 
-    #docker run -p 9292:9292 -p 9200:9200 -d pblittle/docker-logstash
+    #docker run -d -p 54.86.41.97:9292:9292 -p 54.86.41.97:9200:9200 pblittle/docker-logstash
     code <<-EOH
-      docker run -p 9292:9292 -p 9200:9200 -d pblittle/docker-logstash
+      docker run -d -p 9292:9292 -p 9200:9200 pblittle/docker-logstash
     EOH
 
     #docker run #{dockerenvs} -p #{node[:opsworks][:instance][:private_ip]}:#{deploy[:environment_variables][:service_port]}:#{deploy[:environment_variables][:container_port]} --name #{deploy[:application]} -d 
