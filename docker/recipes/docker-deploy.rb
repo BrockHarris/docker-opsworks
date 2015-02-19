@@ -7,16 +7,7 @@ node[:deploy].each do |application, deploy|
     next
   end
 
-  opsworks_deploy_dir do
-    user deploy[:user]
-    group deploy[:group]
-    path deploy[:deploy_to]
-  end
 
-  opsworks_deploy do
-    deploy_data deploy
-    app application
-  end
 
   bash "docker-cleanup" do
     user "root"
@@ -35,18 +26,7 @@ node[:deploy].each do |application, deploy|
     EOH
   end
 
-  bash "docker-build" do
-    user "root"
-    cwd "#{deploy[:deploy_to]}/current"
-    code <<-EOH
-     docker build -t=#{deploy[:application]} . > #{deploy[:application]}-docker.out
-    EOH
-  end
-  
-  dockerenvs = " "
-  deploy[:environment_variables].each do |key, value|
-    dockerenvs=dockerenvs+" -e "+key+"="+value
-  end
+
   
   bash "docker-run" do
     user "root"
@@ -54,10 +34,11 @@ node[:deploy].each do |application, deploy|
 
     #docker run -p 9292:9292 -p 9200:9200 -d pblittle/docker-logstash
     code <<-EOH
-      docker run #{dockerenvs} -p 54.86.41.97:9292:9292 -p 54.86.41.97:9200:9200 -d #{deploy[:application]}
+      docker run -p 9292:9292 -p 9200:9200 -d pblittle/docker-logstash
     EOH
 
     #docker run #{dockerenvs} -p #{node[:opsworks][:instance][:private_ip]}:#{deploy[:environment_variables][:service_port]}:#{deploy[:environment_variables][:container_port]} --name #{deploy[:application]} -d 
+    #docker run -p 10.183.61.222:80:80 -p 10.183.61.222:443:443 -d mydocker
   end
 
 end
