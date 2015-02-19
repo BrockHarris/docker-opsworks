@@ -52,11 +52,9 @@ node[:deploy].each do |application, deploy|
     user "root"
     #cwd "#{deploy[:deploy_to]}/current"
     code <<-EOH
-      docker run -d \
-      -p 9292:9292 \
-      -p 9200:9200 \
-      pblittle/docker-logstash
+      docker run -p 9292:9292 -p 9200:9200 -d pblittle/docker-logstash
     EOH
+
   end
 
 end
