@@ -19,10 +19,6 @@ node[:deploy].each do |application, deploy|
         docker rm $(docker ps -a -q)
         sleep 3
       fi
-      if docker images | grep #{deploy[:application]}; 
-      then
-        docker rmi #{deploy[:application]}
-      fi
     EOH
   end
 
@@ -34,7 +30,7 @@ node[:deploy].each do |application, deploy|
 
     #docker run -d -p 54.86.41.97:9292:9292 -p 54.86.41.97:9200:9200 pblittle/docker-logstash
     code <<-EOH
-      docker run -d -p 54.86.41.97:9292:9292 -p 54.86.41.97:9200:9200 pblittle/docker-logstash
+      docker run -d -p #{node[:opsworks][:instance][:private_ip]}:9292:9292 -p #{node[:opsworks][:instance][:private_ip]}:9200:9200 pblittle/docker-logstash
     EOH
 
     #docker run #{dockerenvs} -p #{node[:opsworks][:instance][:private_ip]}:#{deploy[:environment_variables][:service_port]}:#{deploy[:environment_variables][:container_port]} --name #{deploy[:application]} -d 
