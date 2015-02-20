@@ -7,8 +7,6 @@ node[:deploy].each do |application, deploy|
     next
   end
 
-
-
   bash "docker-cleanup" do
     user "root"
     code <<-EOH
@@ -22,17 +20,10 @@ node[:deploy].each do |application, deploy|
     EOH
   end
 
-
-  
   bash "docker-run" do
     user "root"
-    #cwd "#{deploy[:deploy_to]}/current"
-
     code <<-EOH
-      docker run -d -p 9292:9292 -p 9200:9200 #{dockerenvs}
+      docker run -d -p 5228:5228 -p 5000:5000 -p 9292:9292 -p 9200:9200 pblittle/docker-logstash
     EOH
-
-    #docker run #{dockerenvs} -p #{node[:opsworks][:instance][:private_ip]}:#{deploy[:environment_variables][:service_port]}:#{deploy[:environment_variables][:container_port]} --name #{deploy[:application]} -d 
   end
-
 end
