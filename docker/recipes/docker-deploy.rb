@@ -29,7 +29,7 @@ node[:deploy].each do |application, deploy|
     #cwd "#{deploy[:deploy_to]}/current"
 
     code <<-EOH
-      docker run -d -p 9292:9292 -p 9200:9200 #{deploy[:application]}
+      docker run -d -p 9292:9292 -p 9200:9200 #{dockerenvs}
     EOH
 
     #docker run #{dockerenvs} -p #{node[:opsworks][:instance][:private_ip]}:#{deploy[:environment_variables][:service_port]}:#{deploy[:environment_variables][:container_port]} --name #{deploy[:application]} -d 
