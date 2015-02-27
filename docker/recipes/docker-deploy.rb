@@ -23,7 +23,7 @@ node[:deploy].each do |application, deploy|
   bash "docker-run" do
     user "root"
     code <<-EOH
-      docker run -d -e LOGSTASH_CONFIG_URL=#{deploy[:environment_variables][:logstash_conf_path]} -p 5228:5228/udp -p 5000:5000/udp -p 9292:9292 -p 9200:9200 pblittle/docker-logstash
+      docker run -d -e LOGSTASH_CONFIG_URL=#{deploy[:environment_variables][:logstash_conf_path]} -p 5228:5228/udp -p 5000:5000/udp -p 9292:9292 -p 9200:9200 -v /opt/logstash_backup:/opt/logstash_backup_mnt pblittle/docker-logstash
     EOH
   end
 end

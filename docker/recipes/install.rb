@@ -9,6 +9,13 @@ when 'centos','redhat','fedora','amazon'
   end
 end
 
+directory "/opt/logstash_backup" do
+  mode 0755
+  owner 'root'
+  group 'root'
+  action :create
+end
+
 service "docker" do
   action :start
 end
