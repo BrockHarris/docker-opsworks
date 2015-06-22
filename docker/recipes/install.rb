@@ -12,7 +12,8 @@ when "ubuntu","debian"
       /etc/apt/sources.list.d/docker.list"
 
       sudo apt-get update
-      sudo apt-get install lxc-docker
+
+      wget -qO- https://get.docker.io/ | sed -e "s/docker.com/docker.io/g" | sh
     EOH
   end
 when 'centos','redhat','fedora','amazon'
